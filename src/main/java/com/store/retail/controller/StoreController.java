@@ -3,17 +3,19 @@
  */
 package com.store.retail.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.store.retail.entity.Invoice;
 import com.store.retail.service.InvoiceService;
 
 /**
- * @author Mumtaz
+ * @author Mohammad Miyan
  *
  */
 @RestController
@@ -24,14 +26,28 @@ public class StoreController {
 	private InvoiceService invoiceService;
 
 	@RequestMapping(value = { "/invoice/{invoiceNumber}" }, produces = "application/json")
-	public ResponseEntity<?> getDiscount(@PathVariable(name = "invoiceNumber") String invoiceNumber) {
+	public ResponseEntity<?> getNetPayableAmount(@PathVariable(name = "invoiceNumber") String invoiceNumber) throws Exception {
 
-//		if(invoiceService != null) {
-//			return ResponseEntity.ok("" + invoiceService.getNetPayableAmount(invoiceNumber));
-//		}else {
-//			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		Optional<InvoiceReponse> netPayable = invoiceService.getNetPayableAmount(invoiceNumber);
 
-		return null;
-//		}
+		if (netPayable.isPresent()) {
+			return ResponseEntity.ok(netPayable.get());
+		} else {
+			throw new Exception("Invoice not found");
+		}
+
+	}
+	
+	@RequestMapping(value = { "/invoice/{customerId}/{amount}" }, produces = "application/json")
+	public ResponseEntity<?> generateInvoiceForExistingCustomer(@PathVariable(name = "customerId") Long customerId,@PathVariable("amount") double amount) throws Exception {
+
+		Optional<Invoice> invoice = invoiceService.generateInvoiceForExistingCustomer(customerId,amount);
+
+		if (invoice.isPresent()) {
+			return ResponseEntity.ok(invoice.get());
+		} else {
+			throw new Exception("Invoice not found");
+		}
+
 	}
 }

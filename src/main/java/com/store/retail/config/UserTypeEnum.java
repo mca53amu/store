@@ -11,7 +11,7 @@ import java.util.Optional;
  */
 public enum UserTypeEnum {
 
-	STAFF("STAFF1"), AFFILIATE("AFFILIATE"), EXISTINGUSER("EXISTINGUSER"), NORMALUSER("NORMALUSER");
+	STAFF("STAFF"), AFFILIATE("AFFILIATE"), EXISTINGUSER("EXISTINGUSER"), NORMALUSER("NORMALUSER");
 
 	private final String userType;
 
@@ -26,6 +26,10 @@ public enum UserTypeEnum {
 			}
 		}
 		return null;
+	}
+	
+	public static String toString(UserTypeEnum user) {
+		return user.userType;
 	}
 
 }
