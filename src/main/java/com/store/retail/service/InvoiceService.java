@@ -2,6 +2,8 @@ package com.store.retail.service;
 
 import java.util.Optional;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -70,6 +72,11 @@ public class InvoiceService {
 	}
 
 	private double getDiscountAmount(Discount discount, double amount) {
+		if (discount.getName().equals("NORMALUSER")) {
+			int multiple=(int) (amount/100);
+			double netDiscount =multiple*5;
+			return netDiscount;
+		}
 		return (amount*discount.getPercentage() / 100);
 	}
 
