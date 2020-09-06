@@ -12,8 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.store.retail.service.Discount;
-
 @Entity
 public class CustomerUser {
 	@Id

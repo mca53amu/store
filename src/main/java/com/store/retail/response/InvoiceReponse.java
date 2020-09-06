@@ -1,4 +1,4 @@
-package com.store.retail.controller;
+package com.store.retail.response;
 
 public class InvoiceReponse {
 	

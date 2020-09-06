@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.store.retail.response.ErrorResponse;
+
 @ControllerAdvice
 public class StoreControllerAdvice {
 

@@ -5,9 +5,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.store.retail.controller.InvoiceReponse;
 import com.store.retail.entity.CustomerUser;
+import com.store.retail.entity.Discount;
 import com.store.retail.entity.Invoice;
+import com.store.retail.response.InvoiceReponse;
 
 @Service
 public class InvoiceService {
@@ -36,7 +37,7 @@ public class InvoiceService {
 		customerUser.setUserType(userType2);
 		customerService.save(customerUser);
 		invoice.setCustomerUser(customerUser);
-		Invoice save = invoiceRepo.save(invoice);
+		invoiceRepo.save(invoice);
 		return Optional.ofNullable(buildInvoiceResponse(invoice));
 
 	}

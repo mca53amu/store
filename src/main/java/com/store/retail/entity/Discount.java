@@ -1,4 +1,4 @@
-package com.store.retail.service;
+package com.store.retail.entity;
 
 import java.util.Optional;
 
@@ -13,7 +13,7 @@ public enum Discount {
 		this.percentage = percentage;
 	}
 
-	static Optional<Discount> getDiscount(String userType) {
+	public static Optional<Discount> getDiscount(String userType) {
 
 		for (Discount discount : Discount.values()) {
 			if (discount.getName().equalsIgnoreCase(userType)) {
