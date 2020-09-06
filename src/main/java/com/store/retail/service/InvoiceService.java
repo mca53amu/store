@@ -14,7 +14,7 @@ public class InvoiceService {
 
 	@Autowired
 	private InvoiceRepository invoiceRepo;
-	
+
 	@Autowired
 	private CustomerService customerService;
 
@@ -28,24 +28,26 @@ public class InvoiceService {
 		return Optional.ofNullable(null);
 	}
 
-	public Optional<Invoice> generateInvoiceNewCustomer(String userType) {
+	public Optional<InvoiceReponse> generateInvoiceNewCustomer(String userType, double amount) {
 		Invoice invoice = new Invoice();
-		invoice.setAmount(450);
+		invoice.setAmount(amount);
 		CustomerUser customerUser = getNewCustomer(userType);
-		customerUser.setUserType(Discount.getDiscount(userType).get());
+		Discount userType2 = Discount.getDiscount(userType).get();
+		customerUser.setUserType(userType2);
+		customerService.save(customerUser);
 		invoice.setCustomerUser(customerUser);
 		Invoice save = invoiceRepo.save(invoice);
-		return Optional.ofNullable(save);
+		return Optional.ofNullable(buildInvoiceResponse(invoice));
 
 	}
-	
-	public Optional<Invoice> generateInvoiceForExistingCustomer(Long id,double amount) {
+
+	public Optional<InvoiceReponse> generateInvoiceForExistingCustomer(Long id, double amount) {
 		Invoice invoice = new Invoice();
 		invoice.setAmount(amount);
 		CustomerUser customerUser = customerService.getCustomer(id).get();
 		invoice.setCustomerUser(customerUser);
-		Invoice save = invoiceRepo.save(invoice);
-		return Optional.ofNullable(save);
+		invoiceRepo.save(invoice);
+		return Optional.ofNullable(buildInvoiceResponse(invoice));
 
 	}
 
@@ -54,21 +56,20 @@ public class InvoiceService {
 		customerUser.setUserType(Discount.getDiscount(userType).get());
 		return customerUser;
 	}
-	
 
 	private InvoiceReponse buildInvoiceResponse(Invoice invoice) {
 		String discountName = invoice.getCustomerUser().getUserType().getName();
 		double amount = invoice.getAmount();
 		Long invoiceNum = invoice.getInvoiceNumber();
-		double netPayAmount = invoice.getNetPayAmount();
 		double discountAmount = getDiscountAmount(invoice.getCustomerUser().getUserType(), amount);
+		double netPayAmount = amount-discountAmount;
+		invoice.setNetPayAmount(netPayAmount);
 		return new InvoiceReponse(invoiceNum, discountName, discountAmount, amount, netPayAmount);
 
 	}
 
 	private double getDiscountAmount(Discount discount, double amount) {
-		amount = amount - (amount * discount.getPercentage() / 100);
-		return amount;
+		return (amount*discount.getPercentage() / 100);
 	}
 
 }

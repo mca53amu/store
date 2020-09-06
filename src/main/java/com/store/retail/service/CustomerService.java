@@ -23,4 +23,8 @@ public class CustomerService {
 		return customerRepo.findById(customerId);
 	}
 
+	public void save(CustomerUser customerUser) {
+		customerRepo.save(customerUser);
+	}
+
 }

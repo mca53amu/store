@@ -21,7 +21,7 @@ public class CustomerUser {
 	private Long id;
 	@Enumerated(EnumType.STRING)
 	private Discount userType;
-	@OneToMany(mappedBy = "customerUser", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "customerUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<Invoice> invoices;
 
 	public Long getCustomerId() {

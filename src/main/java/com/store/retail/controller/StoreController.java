@@ -41,8 +41,20 @@ public class StoreController {
 	@RequestMapping(value = { "/invoice/{customerId}/{amount}" }, produces = "application/json")
 	public ResponseEntity<?> generateInvoiceForExistingCustomer(@PathVariable(name = "customerId") Long customerId,@PathVariable("amount") double amount) throws Exception {
 
-		Optional<Invoice> invoice = invoiceService.generateInvoiceForExistingCustomer(customerId,amount);
+		Optional<InvoiceReponse> invoice = invoiceService.generateInvoiceForExistingCustomer(customerId,amount);
 
+		if (invoice.isPresent()) {
+			return ResponseEntity.ok(invoice);
+		} else {
+			throw new Exception("Invoice not found");
+		}
+
+	}
+	
+	@RequestMapping(value = { "/customer/{userType}/{amount}" }, produces = "application/json")
+	public ResponseEntity<?> generateInvoiceForNewCustomer(@PathVariable(name = "userType") String userType, @PathVariable("amount") double amount) throws Exception {
+
+		Optional<InvoiceReponse> invoice = invoiceService.generateInvoiceNewCustomer(userType,amount);
 		if (invoice.isPresent()) {
 			return ResponseEntity.ok(invoice.get());
 		} else {
