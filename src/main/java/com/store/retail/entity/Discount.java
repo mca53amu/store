@@ -3,7 +3,7 @@ package com.store.retail.entity;
 import java.util.Optional;
 
 public enum Discount {
-	STAFF("STAFF", 30), AFFILIATE("AFFILIATE", 10), EXISTINGUSER("EXISTINGUSER", 5), NORMALUSER("NORMALUSER", 0);
+	STAFF("STAFF", 30), AFFILIATE("AFFILIATE", 10), EXISTINGUSER("EXISTINGUSER", 5), NORMALUSER("NORMALUSER", 0),PREMIUM("PREMIUM",20);
 
 	private final String name;
 	private final int percentage;

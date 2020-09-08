@@ -4,6 +4,7 @@
 package com.store.retail.controller;
 
 import java.util.Optional;
+import java.util.concurrent.Semaphore;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.store.retail.entity.Invoice;
 import com.store.retail.response.InvoiceReponse;
 import com.store.retail.service.InvoiceService;
 
