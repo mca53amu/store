@@ -70,4 +70,29 @@ class StoreApplicationTests {
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), result.getResponse().getStatus());
 	}
 
+	@Test
+	public void testController2() throws Exception {
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/store/customer/AFFILIATE/950")
+				.accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON);
+		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+		assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
+	}
+
+	@Test
+	public void testController3() throws Exception {
+		MockMvcRequestBuilders.get("/store/customer/AFFILIATE/950").accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON);
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/store/invoice/1/950")
+				.accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON);
+		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+		assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
+	}
+
+	@Test
+	public void testController4() throws Exception {
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/store/invoice/1")
+				.accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON);
+		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
+		assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
+	}
 }
