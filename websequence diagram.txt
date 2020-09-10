@@ -1,0 +1,16 @@
+Store Controller -> Invoice Service: invoice number 
+Invoice Service -> Invoice Service : get Items list
+
+Invoice Service ->  Discount Service:groceries amount + \n general amount
+
+Discount Service -> Customer Servcie: know customer type
+
+Customer Servcie ->  Discount Service :type of customer
+ 
+Discount Service -> Discount Service : calculate discount
+
+Discount Service   -> Invoice Service : total discount 
+
+Invoice Service  -> Invoice Service : Bill amount \n -  total discount
+
+Invoice Service ->Store Controller : Invoice with net amount

@@ -86,6 +86,7 @@
 				</executions>
 			</plugin>
 		</plugins>
+		<finalName>store</finalName>
 	</build>
 
 </project>

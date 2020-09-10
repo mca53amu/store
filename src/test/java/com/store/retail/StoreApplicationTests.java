@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,49 +23,62 @@ import com.store.retail.service.InvoiceService;
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
 class StoreApplicationTests {
-	@Autowired
+	private static final String PREMIUM = "PREMIUM";
+	private static final String NORMALUSER = "NORMALUSER";
+	private static final String EXISTINGUSER = "EXISTINGUSER";
+	private static final String AFFILIATE = "AFFILIATE";
+	private static final String STAFF = "STAFF";
+	private static final int INVOICE_ID=10;
+	private static final int CUSTOMER_ID=10;
+	private static final double AMOUNT=950;
+	
+	@Mock
 	InvoiceService invoiceService;
 	@Autowired
 	private MockMvc mockMvc;
 
+	public void setUP() {
+
+	}
+
 	@Test
 	public void testSTAFF() throws Exception {
-		InvoiceReponse invoiceRespone = invoiceService.generateInvoiceNewCustomer("STAFF", 950)
+		InvoiceReponse invoiceRespone = invoiceService.generateInvoiceNewCustomer(STAFF, AMOUNT)
 				.orElseThrow(Exception::new);
 		assertEquals(665.0, invoiceRespone.getNetPayAmount(), 0.5);
 	}
 
 	@Test
 	public void testAFFILIATE() throws Exception {
-		InvoiceReponse invoiceRespone = invoiceService.generateInvoiceNewCustomer("AFFILIATE", 950)
+		InvoiceReponse invoiceRespone = invoiceService.generateInvoiceNewCustomer(AFFILIATE, AMOUNT)
 				.orElseThrow(Exception::new);
 		assertEquals(855.0, invoiceRespone.getNetPayAmount(), 0.5);
 	}
 
 	@Test
 	public void testEXISTINGUSER() throws Exception {
-		InvoiceReponse invoiceRespone = invoiceService.generateInvoiceNewCustomer("EXISTINGUSER", 950)
+		InvoiceReponse invoiceRespone = invoiceService.generateInvoiceNewCustomer(EXISTINGUSER, AMOUNT)
 				.orElseThrow(Exception::new);
 		assertEquals(902.5, invoiceRespone.getNetPayAmount(), 0.5);
 	}
 
 	@Test
 	public void testNORMALUSER() throws Exception {
-		InvoiceReponse invoiceRespone = invoiceService.generateInvoiceNewCustomer("NORMALUSER", 950)
+		InvoiceReponse invoiceRespone = invoiceService.generateInvoiceNewCustomer(NORMALUSER, AMOUNT)
 				.orElseThrow(Exception::new);
 		assertEquals(905.0, invoiceRespone.getNetPayAmount(), 0.5);
 	}
 
 	@Test
 	public void testPREMIUMR() throws Exception {
-		InvoiceReponse invoiceRespone = invoiceService.generateInvoiceNewCustomer("PREMIUM", 950)
+		InvoiceReponse invoiceRespone = invoiceService.generateInvoiceNewCustomer(PREMIUM, AMOUNT)
 				.orElseThrow(Exception::new);
 		assertEquals(760.0, invoiceRespone.getNetPayAmount(), 0.5);
 	}
 
 	@Test
 	public void testController() throws Exception {
-		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/store/invoice/10")
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/store/invoice/"+INVOICE_ID)
 				.accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON);
 		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 		assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), result.getResponse().getStatus());
@@ -72,7 +86,7 @@ class StoreApplicationTests {
 
 	@Test
 	public void testController2() throws Exception {
-		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/store/customer/AFFILIATE/950")
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/store/customer/AFFILIATE/"+AMOUNT)
 				.accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON);
 		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 		assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
@@ -80,9 +94,9 @@ class StoreApplicationTests {
 
 	@Test
 	public void testController3() throws Exception {
-		MockMvcRequestBuilders.get("/store/customer/AFFILIATE/950").accept(MediaType.APPLICATION_JSON)
+		MockMvcRequestBuilders.get("/store/customer/AFFILIATE/"+AMOUNT).accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON);
-		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/store/invoice/1/950")
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/store/invoice/"+INVOICE_ID+"/"+AMOUNT)
 				.accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON);
 		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 		assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
@@ -90,7 +104,7 @@ class StoreApplicationTests {
 
 	@Test
 	public void testController4() throws Exception {
-		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/store/invoice/1")
+		RequestBuilder requestBuilder = MockMvcRequestBuilders.get("/store/invoice/"+INVOICE_ID)
 				.accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON);
 		MvcResult result = mockMvc.perform(requestBuilder).andReturn();
 		assertEquals(HttpStatus.OK.value(), result.getResponse().getStatus());
